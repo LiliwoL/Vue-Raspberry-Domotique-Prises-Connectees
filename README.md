@@ -1,5 +1,9 @@
 # vue-raspberry-prises-connectees
 
+Frontend pour le projet Raspberry
+
+***
+
 ## Project setup
 ```
 npm install
