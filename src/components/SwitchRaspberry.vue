@@ -1,17 +1,16 @@
 <template>
   <div class="switches">
-    <SingleSwitch switchNumber="1"></SingleSwitch>
+    <SingleSwitch switchNumber="1" state="{{ switch_1_state }}" @myEvent="changeSwitchesState"></SingleSwitch>
 
-    <SingleSwitch switchNumber="2"></SingleSwitch>
+    <SingleSwitch switchNumber="2" state="{{ switch_2_state }}" @myEvent="changeSwitchesState"></SingleSwitch>
 
-    <SingleSwitch switchNumber="3"></SingleSwitch>
+    <SingleSwitch switchNumber="3" state="{{ switch_3_state }}" @myEvent="changeSwitchesState"></SingleSwitch>
 
-    <SingleSwitch switchNumber="4"></SingleSwitch>
+    <SingleSwitch switchNumber="4" state="{{ switch_4_state }}" @myEvent="changeSwitchesState"></SingleSwitch>
   </div>
 </template>
 
 <script>
-
 import SingleSwitch from "@/components/SingleSwitch";
 
 export default {
@@ -24,8 +23,15 @@ export default {
 
   data() {
     return {
-      // Tableau contenant les switches et leur etat
-      switches: []
+      // Tableau contenant les switches et leur état
+      switches: [],
+      switches_state_uri: process.env.VUE_APP_API_ENDPOINT,
+
+      // Switches states
+      switch_1_state: 0,
+      switch_2_state: 0,
+      switch_3_state: 0,
+      switch_4_state: 0,
     };
   },
 
@@ -33,33 +39,67 @@ export default {
   methods: {
     /**
      * Récupère l'état de tous les switches
+     * https://www.koderhq.com/tutorial/vue/http-fetch/#fetch-method
+     *
      * @returns {Promise<void>}
      */
     async getSwitchesState() {
       try {
-        const response = await this.$http.get(
-            "http://jsonplaceholder.typicode.com/posts"
+        const response = await fetch(
+            this.switches_state_uri,
+            {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({api_key: 'raspB3rr1'})
+            }
         );
 
-        // JSON responses are automatically parsed.
-        this.switches = response.data;
+        const content = response.json();
 
-      } catch (error) {
+        // JSON responses are automatically parsed.
+        this.switches = content;
+
+        // Change les états des switches
+        this.changeSwitchesState();
+      }
+      catch(error){
         console.log(error);
+      }
+    },
+
+    changeSwitchesState( content ){
+      if (content){
+        // Si on reçoit depuis un élément enfant
+
+        // Creates variable name1
+        let variable_name = 'switch_' + this.content.Prise + '_state';
+        this[variable_name] = this.content.state;
+
+      }else{
+        //1 Parcours du tableau des switches
+        this.switches.forEach( switchCurrent => {
+          // Creates variable name
+          let variable_name = 'switch_' + switchCurrent.Prise + '_state';
+          this[variable_name] = switchCurrent.state;
+        })
       }
     }
   },
   // Méthodes exécutées au démarrage de l'appli
   mounted() {
-    // Récupération des variablkes d'environnement
+    // Récupération des variables d'environnement
     console.log("Env");
     console.log(process.env.VUE_APP_API_ENDPOINT)
-    console.log(process.env.VUE_APP_API_KEY)
+    console.log(process.env.VUE_APP_API_KEY);
+
+    // Récupération des états des prises
+    this.getSwitchesState();
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style>
 .switch {

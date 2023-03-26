@@ -1,7 +1,10 @@
 <template>
-  <label class="switch">
-    <input type="checkbox" checked="checked"/>
-    <div class="button">
+  <!-- https://vuejs.org/guide/essentials/template-syntax.html#attribute-bindings -->
+  <label class="switch" :id="switchNumber">
+    <input type="checkbox" v-if="state === 1" checked="checked" :id="switchNumber"/>
+    <input type="checkbox" v-else :id="switchNumber"/>
+
+    <div class="button" @click="change_switch_state()">
       <div class="light"></div>
       <div class="dots"></div>
       <div class="characters"></div>
@@ -17,7 +20,43 @@
 export default {
   name: 'SwitchRaspberry',
   props: {
-    switchNumber: null
+    switchNumber: null,
+    state: null
+  },
+  data() {
+    return {
+      // URL pour changer l'état de la prise
+      switch_state_url: process.env.VUE_APP_API_ENDPOINT + process.env.VUE_APP_API_SWITCH_URL + this.switchNumber,
+      // Récupération de l'état via la props
+      switch_state: this.state === 1 ? 'checked' : ''
+    }
+  },
+  methods: {
+    async change_switch_state(){
+      // Appel API pour changer l'état de la prise
+      try {
+        const response = await fetch(
+            this.switch_state_url,
+            {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({api_key: 'raspB3rr1'})
+            }
+        );
+
+        const content = response.json();
+        console.table(content);
+
+        // Appel de la méthode parente
+        this.$emit("myEvent", content)
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
   }
 }
 </script>

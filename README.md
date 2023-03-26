@@ -1,14 +1,12 @@
-# vue-raspberry-prises-connectees
+# Gestion des prises connectées sur un Raspberry
 
-Frontend pour le projet Raspberry
+Frontend pour le projet Raspberry https://github.com/LiliwoL/Python-Raspberry-Domotique-Prises-Connectees
 
-A faire correspondre à
-
-https://github.com/LiliwoL/Python-Raspberry-Domotique-Prises-Connectees
+Une application Frontend pour communiquer avec l'API placée sur le raspberry.
 
 ## Configuration
 
-Dans un fichier **.env** spécifiez les champs:
+Dans un fichier **.env.local** spécifiez les champs:
 
 ```env
 # API Endpoint
@@ -26,18 +24,18 @@ VUE_APP_API_KEY=raspB3rr1
 
 ***
 
-## Project setup
-```
+## Installation des dépendances
+```bash
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
+## Version de développement
+```bash
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
+## Compilation pour déploiement
+```bash
 npm run build
 ```
 
