@@ -4,6 +4,8 @@ Frontend pour le projet Raspberry https://github.com/LiliwoL/Python-Raspberry-Do
 
 Une application Frontend pour communiquer avec l'API placée sur le raspberry.
 
+![](readme_docs/home.png)
+
 ## Configuration
 
 Dans un fichier **.env.local** spécifiez les champs:
@@ -13,7 +15,7 @@ Dans un fichier **.env.local** spécifiez les champs:
 VUE_APP_API_ENDPOINT=http://192.168.1.56/api
 
 # Api endpoint suffix to switch
-VUE_APP_API_SWITCH_URL=/switch/
+VUE_APP_API_SWITCH_URL=switch/
 
 # Api endpoint suffix to init and get switches states
 VUE_APP_API_INIT_URL=/init/
